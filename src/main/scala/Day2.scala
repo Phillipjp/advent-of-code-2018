@@ -14,11 +14,23 @@ object Day2 {
     (a,b)
   }
 
+  def removeCharFromEveryIndex(s: String): Seq[String] = {
+    for( i <- 0 to s.length-1) yield new StringBuilder(s).deleteCharAt(i).toString()
+  }
+
   def main(args: Array[String]): Unit = {
     val codes = Utils.fileToSeqString("day2input.txt")
-    val x = codes.map(containsRepeatedCharacters(_))
+    //Part 1
+    val x = codes.map(containsRepeatedCharacters)
     val a = x.map(_._1).sum
     val b = x.map(_._2).sum
     println(a*b)
+
+    //Part 2
+    val mapOfallStringPermutations = codes.map(removeCharFromEveryIndex).transpose.map(_.groupBy(identity).mapValues(_.size).filter(_._2 == 2))
+    val id = mapOfallStringPermutations.filter(_.nonEmpty).flatMap(_.map(_._1)).head
+    println(id)
+
+
   }
 }
