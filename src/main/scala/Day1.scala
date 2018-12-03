@@ -1,14 +1,9 @@
 import scala.annotation.tailrec
 import scala.collection.mutable
 
-object day1 {
+object Day1 {
 
-  def fileToSeq(fileName: String): Seq[Long] = {
-    val bufferedSource = io.Source.fromResource(fileName)
-    val lines = (for (line <- bufferedSource.getLines()) yield line.toLong).toList
-    bufferedSource.close
-    lines
-  }
+
 
 //  def findRepeats(runningTotals: Set[Long], currentTotal: Long, frequencies: Seq[Long], i: Int):Long = {
 //    if(runningTotals.contains(currentTotal + frequencies(i))) return currentTotal + frequencies(i)
@@ -35,7 +30,7 @@ object day1 {
 
   def main(args: Array[String]): Unit = {
 
-    val frequencies = fileToSeq("day1input.txt")
+    val frequencies = Utils.fileToSeqLong("day1input.txt")
     //println(frequencies.sum)
 
     val freq = Stream.continually(frequencies.toStream).flatten.scanLeft(0L)(_+_)
