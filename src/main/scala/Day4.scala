@@ -55,6 +55,30 @@ object Day4 {
     mostCommonMinute(minutes, stream)
   }
 
+  def findMostCommonMinuteAndOccurrences(stream: Stream[List[Int]], id: String): (String,(Int,Int)) = {
+    val minutes = List.empty[Int]
+
+    @tailrec
+    def mostCommonMinuteAndOccurrence(minutes: List[Int], stream: Stream[List[Int]]): (Int,Int) = {
+      stream.length match {
+        case 0 =>{
+          val map = minutes.groupBy(x => x).mapValues(_.size)
+          if(map.nonEmpty) map.maxBy(_._2)
+          else(0,0)
+        }
+        case _ => stream.head match {
+          case start :: end :: _ => {
+            val range = start until end
+
+            mostCommonMinuteAndOccurrence((minutes ++: range).toList, stream.tail)
+          }
+        }
+      }
+    }
+
+    (id, mostCommonMinuteAndOccurrence(minutes, stream))
+  }
+
   def main(args: Array[String]): Unit = {
 
     //Part 1
@@ -62,21 +86,19 @@ object Day4 {
     val sortedRecords = records.sortWith(sortRecord).toStream
 
     val sleepingTimes = findGuardsSleepingTimes(sortedRecords)
-
     val totalSleepingTimes = sleepingTimes.map(x => (x._1, x._2.grouped(2).toList.foldLeft(0)((x, y) => x + (y.last - y.head))))
-
-
     val sleepiestGuard = totalSleepingTimes.maxBy { case (key, value) => value }
-    println(sleepiestGuard._1)
-
     val sleepiestGuardsSleepingRanges = sleepingTimes.map(x => (x._1, x._2.grouped(2).toList)).filter(_._1.equals(sleepiestGuard._1)).values.flatten.toStream
-
     val mostCommonMinute = findMostCommonMinute(sleepiestGuardsSleepingRanges)
-
+    println(sleepiestGuard._1)
     println(mostCommonMinute)
 
-    //Part 2
 
+    //Part 2
+    val guardsSleepingRanges: Map[String, Stream[List[Int]]] = sleepingTimes.map(x => (x._1, x._2.grouped(2).toStream))
+    val guardsMostCommonSleepingMinute = guardsSleepingRanges.map(x => findMostCommonMinuteAndOccurrences(x._2, x._1))
+    val mostCommonMinuteBySingleGuard = guardsMostCommonSleepingMinute.maxBy { case (key, (minute,value)) => value }
+    println(mostCommonMinuteBySingleGuard)
 
   }
 }
