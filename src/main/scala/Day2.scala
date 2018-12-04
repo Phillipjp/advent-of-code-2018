@@ -1,3 +1,4 @@
+package adventOfCode
 object Day2 {
 
   private def stringContainsNChar(n: Int, s: String, c: Char):Boolean = {

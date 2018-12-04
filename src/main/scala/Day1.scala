@@ -1,5 +1,5 @@
+package adventOfCode
 import scala.annotation.tailrec
-import scala.collection.mutable
 
 object Day1 {
 
