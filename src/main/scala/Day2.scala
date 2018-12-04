@@ -28,8 +28,8 @@ object Day2 {
     println(a*b)
 
     //Part 2
-    val mapOfallStringPermutations = codes.map(removeCharFromEveryIndex).transpose.map(_.groupBy(identity).mapValues(_.size).filter(_._2 == 2))
-    val id = mapOfallStringPermutations.filter(_.nonEmpty).flatMap(_.map(_._1)).head
+    val mapOfAllStringPermutations = codes.map(removeCharFromEveryIndex).transpose.map(_.groupBy(identity).mapValues(_.size).filter(_._2 == 2))
+    val id = mapOfAllStringPermutations.filter(_.nonEmpty).flatMap(_.map(_._1)).head
     println(id)
 
 

@@ -1,4 +1,8 @@
 package adventOfCode
+
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
 object Utils {
 
   def fileToSeqLong(fileName: String): Seq[Long] = {
@@ -36,6 +40,22 @@ object Utils {
     val h = dim(1).toInt
 
     (id, x,y, w, h)
+  }
+
+  def readGuardRecords(fileName: String):Seq[GuardRecord] = {
+    val bufferedSource = io.Source.fromResource(fileName)
+    val lines = (for (line <- bufferedSource.getLines()) yield line.toString).toList
+    bufferedSource.close
+    lines.map(stringToGuardRecord)
+  }
+
+  private def stringToGuardRecord(s: String):GuardRecord={
+    val split = s.split("]")
+    val timeStamp = new StringBuilder(split(0)).deleteCharAt(0).toString()
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+    val dateTime = LocalDateTime.parse(timeStamp, formatter)
+
+    GuardRecord(dateTime, split(1))
   }
 
   implicit class TakeUntilIteratorWrapper[T](stream: Stream[T]) {
