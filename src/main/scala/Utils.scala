@@ -58,6 +58,13 @@ object Utils {
     GuardRecord(dateTime, split(1))
   }
 
+  def readInPolymer(fileName: String):String = {
+    val bufferedSource = io.Source.fromResource(fileName)
+    val polymer = (for (line <- bufferedSource.getLines()) yield line.toString).toList
+    bufferedSource.close
+    polymer.head
+  }
+
   implicit class TakeUntilIteratorWrapper[T](stream: Stream[T]) {
     def takeUntil(predicate: T => Boolean): Stream[T] = {
       stream.span(!predicate(_)) match {
@@ -65,6 +72,8 @@ object Utils {
       }
     }
   }
+
+
 
 }
 
