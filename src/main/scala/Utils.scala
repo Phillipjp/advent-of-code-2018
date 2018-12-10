@@ -65,6 +65,27 @@ object Utils {
     polymer.head
   }
 
+  def readInIntTuples(fileName: String):Seq[(Int,Int)]= {
+    val bufferedSource = io.Source.fromResource(fileName)
+    val lines = (for (line <- bufferedSource.getLines()) yield line.toString).toList
+    bufferedSource.close
+    lines.map(x =>{
+      val arr = x.split(", ")
+      (arr(0).toInt, arr(1).toInt)
+    } )
+  }
+
+  def readInstructionSteps(fileName: String):Seq[InstructionStep]={
+    val bufferedSource = io.Source.fromResource(fileName)
+    val lines = (for (line <- bufferedSource.getLines()) yield line.toString).toList
+    bufferedSource.close
+    lines.map(stringToInstructionStep)
+  }
+
+  private def stringToInstructionStep(s: String):InstructionStep = {
+    val arr = s.split(" ")
+    InstructionStep(arr(1), arr(7))
+  }
   implicit class TakeUntilIteratorWrapper[T](stream: Stream[T]) {
     def takeUntil(predicate: T => Boolean): Stream[T] = {
       stream.span(!predicate(_)) match {
